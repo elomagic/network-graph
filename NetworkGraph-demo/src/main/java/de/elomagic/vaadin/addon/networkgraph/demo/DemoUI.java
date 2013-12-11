@@ -2,6 +2,7 @@ package de.elomagic.vaadin.addon.networkgraph.demo;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -10,6 +11,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -45,10 +47,14 @@ public class DemoUI extends UI {
             // Initialize our new UI component
             final NetworkGraph component = new NetworkGraph();
             component.setSizeFull();
-            //component.setHeight("400px");
-            //component.setWidth("400px");
-
             component.setData(data);
+            component.addSelectListener(new NetworkGraph.SelectListener() {
+
+                @Override
+                public void nodeSelect(final NetworkGraph.SelectEvent event) {
+                    Notification.show("Nodes selected: " + Arrays.toString(event.getNodesId().toArray()));
+                }
+            });
 
             // Show it in the middle of the screen
             final VerticalLayout layout = new VerticalLayout();
