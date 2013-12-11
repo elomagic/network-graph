@@ -33,12 +33,16 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     public NetworkGraph() {
         super();
 
-        addFunction("onSelectNode", new JavaScriptFunction() {
+        addFunction("onSelectNodes", new JavaScriptFunction() {
 
             @Override
             public void call(final JSONArray arguments) throws JSONException {
-
-                fireSelectNodeEvent(arguments.getString(0));
+                JSONArray array = arguments.getJSONArray(0);
+                List<String> list = new ArrayList<>();
+                for(int i = 0; i < array.length(); i++) {
+                    list.add(array.getString(i));
+                }
+                fireSelectNodeEvent(list);
             }
         });
     }
@@ -64,8 +68,8 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         selectListener.remove(listener);
     }
 
-    private void fireSelectNodeEvent(final String nodeId) {
-        SelectEvent event = new SelectEvent(this, nodeId);
+    private void fireSelectNodeEvent(final List<String> nodesId) {
+        SelectEvent event = new SelectEvent(this, nodesId);
 
         for(SelectListener listener : selectListener) {
             listener.nodeSelect(event);
@@ -73,16 +77,16 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     }
 
     public class SelectEvent extends Component.Event {
-        private final String nodeId;
+        private final List<String> nodesId;
 
-        public SelectEvent(final Component source, final String nodeId) {
+        public SelectEvent(final Component source, final List<String> nodesId) {
             super(source);
 
-            this.nodeId = nodeId;
+            this.nodesId = nodesId;
         }
 
-        public String getNodeId() {
-            return nodeId;
+        public List<String> getNodesId() {
+            return nodesId;
         }
 
     }

@@ -38,6 +38,10 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
 
         var container = document.getElementById('netgraph');
         var graph = new vis.Graph(container, model, options);
+        vis.events.addListener(graph, 'select', function onSelect() {
+            self.onSelectNodes(graph.getSelection());
+        });
+
     };
 
 
