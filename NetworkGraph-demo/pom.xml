@@ -74,7 +74,7 @@
     <dependencies>
         <dependency>
             <groupId>de.elomagic.vaadin.addon</groupId>
-            <artifactId>NetworkGraph</artifactId>
+            <artifactId>network-graph</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
