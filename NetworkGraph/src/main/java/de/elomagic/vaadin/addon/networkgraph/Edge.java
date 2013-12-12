@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2013 carstenrambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,11 @@
  */
 package de.elomagic.vaadin.addon.networkgraph;
 
+/**
+ * Edges are connections between nodes.
+ * <p/>
+ * An edge must at least contain properties from and to, both referring to the id of a node. Edges can have extra properties, used to define the type and style.
+ */
 public final class Edge {
     private String from;
     private String to;
@@ -29,34 +34,86 @@ public final class Edge {
         this.to = to;
     }
 
+    /**
+     * Returns the id of a node where the edge starts (Required).
+     * <p/>
+     * The type must correspond with the type of the node id's. This is normally a number, but can be any type.
+     *
+     * @return The id
+     */
     public String getFrom() {
         return from;
     }
 
+    /**
+     * Set the id of a node where the edge starts (Required).
+     * <p/>
+     * The type must correspond with the type of the node id's. This is normally a number, but can be any type.
+     *
+     * @param from The Id
+     */
     public void setFrom(final String from) {
         this.from = from;
     }
 
+    /**
+     * Returns the id of a node where the edge ends.
+     * <p/>
+     * The type must correspond with the type of the node id's. This is normally a number, but can be any type.
+     *
+     * @return The Id
+     */
     public String getTo() {
         return to;
     }
 
+    /**
+     * Set the id of a node where the edge ends.
+     * <p/>
+     * The type must correspond with the type of the node id's. This is normally a number, but can be any type.
+     *
+     * @param to The Id
+     */
     public void setTo(final String to) {
         this.to = to;
     }
 
+    /**
+     * Returns the line style for the edge.
+     * <p/>
+     * Choose from line (default), arrow, arrow-center, or dash-line.
+     *
+     * @return Style
+     */
     public String getStyle() {
         return style;
     }
 
+    /**
+     * Set the line style for the edge.
+     * <p/>
+     * Choose from line (default), arrow, arrow-center, or dash-line.
+     *
+     * @param style Style
+     */
     public void setStyle(final String style) {
         this.style = style;
     }
 
+    /**
+     * Returns HTML color for the edge.
+     *
+     * @return HTML encoded color
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Set HTML color for the edge.
+     *
+     * @param color HTML encoded color
+     */
     public void setColor(final String color) {
         this.color = color;
     }

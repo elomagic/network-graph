@@ -15,6 +15,11 @@
  */
 package de.elomagic.vaadin.addon.networkgraph;
 
+/**
+ * Nodes typically have an id and label.
+ * <p/>
+ * A node must contain at least a property id. Nodes can have extra properties, used to define the shape and style of the nodes.
+ */
 public class Node {
     private String id;
     private String label;

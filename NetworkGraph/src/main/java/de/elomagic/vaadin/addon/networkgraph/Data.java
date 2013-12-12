@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2013 carstenrambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import java.util.List;
 import org.json.JSONException;
 
 /**
- *
+ * The data class of the Graph is an object which can contain different types of data.
  */
 public final class Data {
     private Node[] nodes;
