@@ -136,7 +136,6 @@
                             <!-- Package format version - do not change -->
                             <Vaadin-Package-Version>1</Vaadin-Package-Version>
                             <Vaadin-License-Title>${Vaadin-License-Title}</Vaadin-License-Title>
-                            <Vaadin-Widgetsets>de.elomagic.vaadin.addon.networkgraph.WidgetSet</Vaadin-Widgetsets>
                         </manifestEntries>
                     </archive>
                 </configuration>
