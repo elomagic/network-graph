@@ -39,8 +39,11 @@ public class DemoUI extends UI {
             Node node1 = new Node("node1", "Node 1");
             node1.setTitle("blablabla<br/>blubb");
 
-            List<Node> nodes = Arrays.asList(node1, new Node("node2", "Node 2"));
-            List<Edge> edges = Arrays.asList(edge);
+            Node node3 = new Node("node3", "Node 3");
+            node3.setShape("square");
+
+            List<Node> nodes = Arrays.asList(node1, new Node("node2", "Node 2"), node3);
+            List<Edge> edges = Arrays.asList(edge, new Edge("node1", "node3"));
 
             Data data = new Data(nodes, edges);
 
