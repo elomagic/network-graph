@@ -1,14 +1,14 @@
-# NetworkGraph Add-on for Vaadin 7
+# Network Graph Add-on for Vaadin 7
 
-NetworkGraph is an UI component add-on for Vaadin 7.
+Network Graph is an UI component add-on for Vaadin 7 based on the VISUAL INTERACTION SYSTEM Java Script library ([vis.js](http://visjs.org)).
 
 ## Online demo
 
-Try the add-on demo at <url of the online demo>
+Currently no add-on demo available. See pure JS demo at [vis.js](http://visjs.org/#gallery).
 
 ## Download release
 
-Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/NetworkGraph
+Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/network-graph
 
 ## Building and running demo
 
@@ -57,13 +57,11 @@ Another way of debugging client-side is superdev mode. To enable it, uncomment d
 
 ## Roadmap
 
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
+Currently no roadmap planned
 
 ## Issue tracking
 
-The issues for this add-on are tracked on its github.com page. All bug reports and feature requests are appreciated. 
+The issues for this add-on are tracked on [github.com](https://github.com/elomagic/network-graph/issues). All bug reports and feature requests are appreciated. 
 
 ## Contributions
 
@@ -79,32 +77,12 @@ Contributions are welcome, but there are no guarantees that they are accepted as
 
 Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
 
-NetworkGraph is written by <...>
-
 # Developer Guide
 
 ## Getting started
 
-Here is a simple example on how to try out the add-on component:
-
-<...>
-
 For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
-
-## Features
-
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
 
 ## API
 
-NetworkGraph JavaDoc is available online at <...>
+NetworkGraph JavaDoc is currently not available online
