@@ -5,7 +5,7 @@
     <groupId>de.elomagic.vaadin.addon</groupId>
     <artifactId>network-graph-demo</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
     <name>NetworkGraph Add-on Demo ${project.version}</name>
 
     <properties>
@@ -30,7 +30,7 @@
         <system>GitHub</system>
         <url>https://github.com/elomagic/network-graph/issues</url>
     </issueManagement>
-    
+
     <licenses>
         <license>
             <name>Apache 2</name>
