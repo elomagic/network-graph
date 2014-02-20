@@ -23,22 +23,22 @@ import org.json.JSONException;
  * The data class of the Graph is an object which can contain different types of data.
  */
 public final class Data {
-    private Node[] nodes;
+    private GraphNode[] nodes;
     private Edge[] edges;
 
     public Data() {
     }
 
-    public Data(final List<Node> nodes, final List<Edge> edges) throws JSONException {
-        this.nodes = nodes.toArray(new Node[0]);
+    public Data(final List<GraphNode> nodes, final List<Edge> edges) throws JSONException {
+        this.nodes = nodes.toArray(new GraphNode[0]);
         this.edges = edges.toArray(new Edge[0]);
     }
 
-    public void setNodes(Node[] nodes) {
+    public void setNodes(GraphNode[] nodes) {
         this.nodes = nodes;
     }
 
-    public Node[] getNodes() {
+    public GraphNode[] getNodes() {
         return nodes;
     }
 

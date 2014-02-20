@@ -18,7 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import de.elomagic.vaadin.addon.networkgraph.Data;
 import de.elomagic.vaadin.addon.networkgraph.Edge;
 import de.elomagic.vaadin.addon.networkgraph.NetworkGraph;
-import de.elomagic.vaadin.addon.networkgraph.Node;
+import de.elomagic.vaadin.addon.networkgraph.GraphNode;
 
 @Theme("demo")
 @Title("NetworkGraph Add-on Demo")
@@ -36,13 +36,13 @@ public class DemoUI extends UI {
             Edge edge = new Edge("node1", "node2");
             //edge.setStyle("dash-line");
 
-            Node node1 = new Node("node1", "Node 1");
+            GraphNode node1 = new GraphNode("node1", "Node 1");
             node1.setTitle("blablabla<br/>blubb");
 
-            Node node3 = new Node("node3", "Node 3");
+            GraphNode node3 = new GraphNode("node3", "Node 3");
             node3.setShape("square");
 
-            List<Node> nodes = Arrays.asList(node1, new Node("node2", "Node 2"), node3);
+            List<GraphNode> nodes = Arrays.asList(node1, new GraphNode("node2", "Node 2"), node3);
             List<Edge> edges = Arrays.asList(edge, new Edge("node1", "node3"));
 
             Data data = new Data(nodes, edges);
