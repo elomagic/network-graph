@@ -18,17 +18,18 @@ package de.elomagic.vaadin.addon.networkgraph;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.JavaScriptFunction;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 @JavaScript({"js/vis.min.js", "js/networkgraph-connector.js"})
 public class NetworkGraph extends AbstractJavaScriptComponent {
     private final List<SelectListener> selectListener = new ArrayList<>();
+    private final List<String> selectedItems = new ArrayList<>();
 
     public NetworkGraph() {
         super();
@@ -42,6 +43,10 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
                 for(int i = 0; i < array.length(); i++) {
                     list.add(array.getString(i));
                 }
+
+                selectedItems.clear();
+                selectedItems.addAll(list);
+
                 fireSelectNodeEvent(list);
             }
         });
@@ -54,6 +59,15 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     @Override
     protected NetworkGraphState getState() {
         return (NetworkGraphState)super.getState();
+    }
+
+    /**
+     * Returns list of selected node Id's.
+     *
+     * @return List of id's
+     */
+    public List<String> getSelectedItems() {
+        return selectedItems;
     }
 
     public void addSelectListener(final SelectListener listener) {
