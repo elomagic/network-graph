@@ -25,6 +25,7 @@ public final class Edge {
     private String to;
     private String style = "line";
     private String color;
+    private int length;
 
     public Edge() {
     }
@@ -116,6 +117,24 @@ public final class Edge {
      */
     public void setColor(final String color) {
         this.color = color;
+    }
+
+    /**
+     * Returns the length of the edge in pixels.
+     *
+     * @return
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Set the length of the edge in pixels.
+     *
+     * @param length
+     */
+    public void setLength(final int length) {
+        this.length = length;
     }
 
 }
