@@ -24,7 +24,7 @@ public final class Edge {
     private String from;
     private String to;
     private String style = "line";
-    private String color;
+    private String color = "";
     private int length;
 
     public Edge() {

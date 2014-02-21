@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 carstenrambow.
+ * Copyright 2014 Carsten Rambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package de.elomagic.vaadin.addon.networkgraph;
 /**
  * GraphNodes typically have an id and label.
  * <p/>
- A node must contain at least a property id. GraphNodes can have extra properties, used to define the shape and style of the nodes.
+ * A node must contain at least a property id. GraphNodes can have extra properties, used to define the shape and style of the nodes.
  */
 public class GraphNode {
     private String id;
     private String label;
-    private String color;
+    private String color = "";
     private String shape = "ellipse";
     private String image;
     private String title;
@@ -48,7 +48,7 @@ public class GraphNode {
     /**
      * Set a unique id for this node (Required).
      * <p/>
- GraphNodes may not have duplicate id's. Id's do not need to be consecutive. An id is normally a number, but may be any type.
+     * GraphNodes may not have duplicate id's. Id's do not need to be consecutive. An id is normally a number, but may be any type.
      *
      * @param id A unique id for this node.
      */

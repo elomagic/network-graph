@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 carstenrambow.
+ * Copyright 2014 Carsten Rambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,23 @@ package de.elomagic.vaadin.addon.networkgraph;
 
 import java.util.List;
 
-import org.json.JSONException;
-
 /**
  * The data class of the Graph is an object which can contain different types of data.
  */
 public final class Data {
+    private String command = DataCommand.SetData.name();
     private GraphNode[] nodes;
     private Edge[] edges;
 
     public Data() {
     }
 
-    public Data(final List<GraphNode> nodes, final List<Edge> edges) throws JSONException {
+    public Data(final List<GraphNode> nodes, final List<Edge> edges) {
         this.nodes = nodes.toArray(new GraphNode[0]);
         this.edges = edges.toArray(new Edge[0]);
     }
 
-    public void setNodes(GraphNode[] nodes) {
+    public void setNodes(final GraphNode[] nodes) {
         this.nodes = nodes;
     }
 
@@ -46,8 +45,20 @@ public final class Data {
         return edges;
     }
 
-    public void setEdges(Edge[] edges) {
+    public void setEdges(final Edge[] edges) {
         this.edges = edges;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(final String command) {
+        this.command = command;
+    }
+
+    public void setCommand(final DataCommand command) {
+        this.command = command.name();
     }
 
 }

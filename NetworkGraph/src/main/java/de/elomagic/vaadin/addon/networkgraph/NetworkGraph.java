@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 carstenrambow.
+ * Copyright 2014 Carsten Rambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,22 @@
 package de.elomagic.vaadin.addon.networkgraph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.vaadin.annotations.JavaScript;
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.JavaScriptFunction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 @JavaScript({"js/vis.min.js", "js/networkgraph-connector.js"})
+@StyleSheet({"css/vis.css"})
 public class NetworkGraph extends AbstractJavaScriptComponent {
     private final List<SelectListener> selectListener = new ArrayList<>();
     private final List<String> selectedItems = new ArrayList<>();
@@ -53,6 +58,48 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     }
 
     public void setData(final Data data) {
+        data.setCommand(DataCommand.SetData);
+        getState().data = data;
+    }
+
+    public void addData(final GraphNode[] nodes, final Edge[] edges) {
+        Data data = new Data();
+        data.setCommand(DataCommand.AddData);
+        data.setNodes(nodes);
+        data.setEdges(edges);
+
+        getState().data = data;
+    }
+
+    public void addNodes(final GraphNode[] nodes) {
+        Data data = new Data();
+        data.setCommand(DataCommand.AddData);
+        data.setNodes(nodes);
+        getState().data = data;
+    }
+
+    public void setNodes(final GraphNode[] nodes) {
+        Data data = new Data(Arrays.asList(nodes), Collections.EMPTY_LIST);
+        data.setCommand(DataCommand.SetNodes);
+        getState().data = data;
+    }
+
+    public void updateNodes(final GraphNode[] nodes) {
+        Data data = new Data();
+        data.setCommand(DataCommand.UpdateNodes);
+        data.setNodes(nodes);
+        getState().data = data;
+    }
+
+    public void addEdges(final Edge[] edges) {
+        Data data = new Data();
+        data.setCommand(DataCommand.AddEdges);
+        data.setEdges(edges);
+        getState().data = data;
+    }
+
+    public void setEdges(final Edge[] edges) {
+        Data data = new Data(Collections.EMPTY_LIST, Arrays.asList(edges));
         getState().data = data;
     }
 

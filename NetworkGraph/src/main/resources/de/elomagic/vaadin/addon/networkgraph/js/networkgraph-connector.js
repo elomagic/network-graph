@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 carstenrambow.
+ * Copyright 2014 Carsten Rambow.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,40 +15,49 @@
  */
 window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
 
-    // end
+    var nodes, edges, graph;
 
     var e = this.getElement();
     var self = this;
 
     // Handle changes from the server-side
     this.onStateChange = function() {
-        e.innerHTML = "<div id=\"netgraph\" style=\"width: " + this.getState().width + "; height:" + this.getState().height + "\"></div><div id=\"log\"></div>";
+        var state = this.getState();
+        var command = state.data.command;
 
-        var data = this.getState().data;
+        if (command == "SetData") {
+            e.innerHTML = "<div id=\"netgraph\" style=\"width: " + state.width + "; height:" + state.height + "\"></div><div id=\"log\"></div>";
 
-        var model = {
-            nodes: new Array().concat(data.nodes),
-            edges: new Array().concat(data.edges)
-        };
+            nodes = new vis.DataSet();
+            nodes.add(new Array().concat(state.data.nodes));
 
-        var options = {
-            width: this.getState().width,
-            height: this.getState().height
-        };
+            edges = new vis.DataSet();
+            edges.add(new Array().concat(state.data.edges));
 
-        var container = document.getElementById('netgraph');
-        var graph = new vis.Graph(container, model, options);
-        vis.events.addListener(graph, 'select', function onSelect() {
-            self.onSelectNodes(graph.getSelection());
-        });
+            var model = {
+                nodes: nodes,
+                edges: edges
+            };
 
+            var options = {
+                width: state.width,
+                height: state.height
+            };
+
+            var container = document.getElementById('netgraph');
+            graph = new vis.Graph(container, model, options);
+            graph.on('select', function(properties) {
+                self.onSelectNodes(properties.nodes);
+            });
+        } else if (command == "AddData") {
+            nodes.add(new Array().concat(state.data.nodes));
+            edges.add(new Array().concat(state.data.edges));
+        } else if (command == "AddNodes") {
+            nodes.add(new Array().concat(state.data.nodes));
+        } else if (command == "UpdateNodes") {
+            nodes.update(new Array().concat(state.data.nodes));
+        } else if (command == "AddEdges") {
+            edges.add(new Array().concat(state.data.edges));
+        }
     };
-
-
-
-    // Pass user interaction to the server-side
-    //var self = this;
-    //mycomponent.click = function() {
-    //    self.onClick(mycomponent.getValue());
-    //};
 };
