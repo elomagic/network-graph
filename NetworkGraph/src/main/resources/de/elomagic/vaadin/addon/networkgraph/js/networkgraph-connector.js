@@ -28,9 +28,9 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
         nodes.clear();
     };
 
-    this.addData = function(n, e) {
-        nodes.add(new Array().concat(n));
-        edges.add(new Array().concat(e));
+    this.addData = function(no, ed) {
+        nodes.add(new Array().concat(no));
+        edges.add(new Array().concat(ed));
     };
 
     this.addNodes = function(n) {
@@ -41,11 +41,9 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
         nodes.update(new Array().concat(n));
     };
 
-    this.addEdges = function(e) {
-        edges.add(new Array().concat(e));
+    this.addEdges = function(ed) {
+        edges.add(new Array().concat(ed));
     };
-
-
 
     // Handle changes from the server-side
     this.onStateChange = function() {
@@ -78,10 +76,9 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
                 self.onSelectNodes(properties.nodes);
             });
 
-//            graph.on("frameResize", function(params) {
-//                options.width = params.width;
-//                options.height = params.height;
-//            });
+            window.onresize = function() {
+                graph.redraw();
+            };
 
         }
     };
