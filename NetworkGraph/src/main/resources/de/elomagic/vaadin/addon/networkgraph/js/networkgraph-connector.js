@@ -20,13 +20,41 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
     var e = this.getElement();
     var self = this;
 
+    this.redraw = function() {
+        graph.redraw();
+    };
+
+    this.clear = function(n) {
+        nodes.clear();
+    };
+
+    this.addData = function(n, e) {
+        nodes.add(new Array().concat(n));
+        edges.add(new Array().concat(e));
+    };
+
+    this.addNodes = function(n) {
+        nodes.add(new Array().concat(n));
+    };
+
+    this.updateNodes = function(n) {
+        nodes.update(new Array().concat(n));
+    };
+
+    this.addEdges = function(e) {
+        edges.add(new Array().concat(e));
+    };
+
+
+
     // Handle changes from the server-side
     this.onStateChange = function() {
         var state = this.getState();
         var command = state.data.command;
 
-        if (command == "SetData") {
-            e.innerHTML = "<div id=\"netgraph\" style=\"width: " + state.width + "; height:" + state.height + "\"></div><div id=\"log\"></div>";
+        if (command == "Init") {
+//            e.innerHTML = "<div id=\"netgraph\" style=\"width: " + state.width + "; height:" + state.height + "\"></div><div id=\"log\"></div>";
+            e.innerHTML = "<div id=\"netgraph\"></div><div id=\"log\"></div>";
 
             nodes = new vis.DataSet();
             nodes.add(new Array().concat(state.data.nodes));
@@ -49,15 +77,12 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
             graph.on('select', function(properties) {
                 self.onSelectNodes(properties.nodes);
             });
-        } else if (command == "AddData") {
-            nodes.add(new Array().concat(state.data.nodes));
-            edges.add(new Array().concat(state.data.edges));
-        } else if (command == "AddNodes") {
-            nodes.add(new Array().concat(state.data.nodes));
-        } else if (command == "UpdateNodes") {
-            nodes.update(new Array().concat(state.data.nodes));
-        } else if (command == "AddEdges") {
-            edges.add(new Array().concat(state.data.edges));
+
+//            graph.on("frameResize", function(params) {
+//                options.width = params.width;
+//                options.height = params.height;
+//            });
+
         }
     };
 };

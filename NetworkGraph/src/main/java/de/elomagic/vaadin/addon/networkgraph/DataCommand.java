@@ -16,11 +16,6 @@
 package de.elomagic.vaadin.addon.networkgraph;
 
 public enum DataCommand {
-    SetData,
-    AddData,
-    AddNodes,
-    SetNodes,
-    UpdateNodes,
-    AddEdges
-
+    None,
+    Init
 }

@@ -57,45 +57,52 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         });
     }
 
+    /**
+     * Redraw the graph.
+     * <p/>
+     * Useful when the layout of the webpage changed..
+     */
+    public void redraw() {
+        getState().data.setCommand(DataCommand.None);
+        callFunction("redraw");
+    }
+
     public void setData(final Data data) {
-        data.setCommand(DataCommand.SetData);
+        data.setCommand(DataCommand.Init);
         getState().data = data;
+    }
+
+    /**
+     * Clear the complete DataSet.
+     */
+    public void clear() {
+        getState().data.setCommand(DataCommand.None);
+        callFunction("clear");
     }
 
     public void addData(final GraphNode[] nodes, final Edge[] edges) {
-        Data data = new Data();
-        data.setCommand(DataCommand.AddData);
-        data.setNodes(nodes);
-        data.setEdges(edges);
-
-        getState().data = data;
+        getState().data.setCommand(DataCommand.None);
+        callFunction("addData", new Object[] {toJSONArray(nodes)}, new Object[] {toJSONArray(edges)});
     }
 
-    public void addNodes(final GraphNode[] nodes) {
-        Data data = new Data();
-        data.setCommand(DataCommand.AddData);
-        data.setNodes(nodes);
-        getState().data = data;
+    public void addNodes(final GraphNode[] nodes) throws JSONException {
+        getState().data.setCommand(DataCommand.None);
+        callFunction("addNodes", new Object[] {toJSONArray(nodes)});
     }
 
-    public void setNodes(final GraphNode[] nodes) {
-        Data data = new Data(Arrays.asList(nodes), Collections.EMPTY_LIST);
-        data.setCommand(DataCommand.SetNodes);
-        getState().data = data;
-    }
-
+    /**
+     * Update a node or an array with nodes.
+     *
+     * @param nodes
+     */
     public void updateNodes(final GraphNode[] nodes) {
-        Data data = new Data();
-        data.setCommand(DataCommand.UpdateNodes);
-        data.setNodes(nodes);
-        getState().data = data;
+        getState().data.setCommand(DataCommand.None);
+        callFunction("updateNodes", new Object[] {toJSONArray(nodes)});
     }
 
     public void addEdges(final Edge[] edges) {
-        Data data = new Data();
-        data.setCommand(DataCommand.AddEdges);
-        data.setEdges(edges);
-        getState().data = data;
+        getState().data.setCommand(DataCommand.None);
+        callFunction("addEdges", new Object[] {toJSONArray(edges)});
     }
 
     public void setEdges(final Edge[] edges) {
@@ -135,6 +142,16 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         for(SelectListener listener : selectListener) {
             listener.nodeSelect(event);
         }
+    }
+
+    private JSONObject[] toJSONArray(final Object[] objects) {
+        List<JSONObject> result = new ArrayList();
+
+        for(Object o : objects) {
+            result.add(new JSONObject(o));
+        }
+
+        return result.toArray(new JSONObject[0]);
     }
 
     public class SelectEvent extends Component.Event {
