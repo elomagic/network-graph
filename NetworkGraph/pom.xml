@@ -213,4 +213,18 @@
 
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>elomagic-public-releases</id>
+            <name>elomagic public release repository</name>
+            <url>https://nexus.elomagic.de/content/repositories/public-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>elomagic-public-snapshots</id>
+            <name>elomagic public snapshot repository</name>
+            <url>https://nexus.elomagic.de/content/repositories/public-snapshots/</url>
+        </snapshotRepository>
+
+    </distributionManagement>
+
 </project>
