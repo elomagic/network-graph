@@ -109,6 +109,11 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         callFunction("updateNodes", new Object[] {toJSONArray(nodes)});
     }
 
+    public void removeNodes(final String[] nodeUIDs) {
+        getState().data.setCommand(DataCommand.None);
+        callFunction("removeNodes", (Object[])nodeUIDs);
+    }
+
     public void addEdges(final Edge[] edges) {
         getState().data.setCommand(DataCommand.None);
         callFunction("addEdges", new Object[] {toJSONArray(edges)});

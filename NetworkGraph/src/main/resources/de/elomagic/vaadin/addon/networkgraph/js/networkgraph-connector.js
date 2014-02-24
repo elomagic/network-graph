@@ -41,6 +41,10 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
         nodes.update(new Array().concat(n));
     };
 
+    this.removeNodes = function(n) {
+        nodes.remove(new Array().concat(n));
+    }
+
     this.addEdges = function(ed) {
         edges.add(new Array().concat(ed));
     };
