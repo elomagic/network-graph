@@ -91,7 +91,7 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
 
     public void addData(final GraphNode[] nodes, final Edge[] edges) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("addData", new Object[] {toJSONArray(nodes)}, new Object[] {toJSONArray(edges)});
+        callFunction("addData", toJSONArray(nodes), toJSONArray(edges));
     }
 
     public void addNodes(final GraphNode[] nodes) throws JSONException {
