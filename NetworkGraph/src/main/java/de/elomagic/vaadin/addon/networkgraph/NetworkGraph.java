@@ -30,6 +30,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * NetworkGraph is a visualization to display graphs and networks consisting of nodes and edges.
+ * <p/>
+ * The visualization is easy to use and supports custom shapes, styles, colors, sizes, images, and more.
+ * <p/>
+ * The graph visualization works smooth on any modern browser for up to a few thousand nodes and edges. To handle a larger amount of nodes, Graph has clustering support.
+ *
+ * @author Carsten Rambow
+ */
 @JavaScript({"js/vis.min.js", "js/networkgraph-connector.js"})
 @StyleSheet({"css/vis.css"})
 public class NetworkGraph extends AbstractJavaScriptComponent {
@@ -116,12 +125,28 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     }
 
     /**
-     * Returns list of selected node Id's.
+     * Returns an array with the ids of the selected nodes.
+     * <p/>
+     * Returns an empty array if no nodes are selected. The selections are not ordered.
      *
      * @return List of id's
      */
     public List<String> getSelectedItems() {
         return selectedItems;
+    }
+
+    /**
+     * Select nodes.
+     * <p/>
+     * <code>nodes</code> is an array with ids of nodes to be selected. The array selection can contain zero or multiple ids.
+     * <p/>
+     * Example usage: graph.setSelection([3, 5]); will select nodes with id 3 and 5.
+     *
+     * @param nodes
+     */
+    public void setSelection(final GraphNode[] nodes) {
+        getState().data.setCommand(DataCommand.None);
+        callFunction("setSelection", new Object[] {toJSONArray(nodes)});
     }
 
     public void addSelectListener(final SelectListener listener) {

@@ -45,6 +45,10 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
         edges.add(new Array().concat(ed));
     };
 
+    this.setSelection = function(n) {
+        graph.setSelection(n);
+    }
+
     // Handle changes from the server-side
     this.onStateChange = function() {
         var state = this.getState();
