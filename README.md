@@ -1,5 +1,7 @@
 # Network Graph Add-on for Vaadin 7
 
+[![Build Status](https://travis-ci.org/elomagic/network-graph.png)](https://travis-ci.org/elomagic/network-graph)
+
 Network Graph is an UI component add-on for Vaadin 7 based on the VISUAL INTERACTION SYSTEM Java Script library ([vis.js](http://visjs.org)).
 
 ![Sample 1](/img/sample01.png)
