@@ -213,18 +213,40 @@
 
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>elomagic-public-releases</id>
-            <name>elomagic public release repository</name>
-            <url>https://nexus.elomagic.de/content/repositories/public-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>elomagic-public-snapshots</id>
-            <name>elomagic public snapshot repository</name>
-            <url>https://nexus.elomagic.de/content/repositories/public-snapshots/</url>
-        </snapshotRepository>
-
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <version>3.3</version>
+                        <configuration>
+                            <reportPlugins>
+                                <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-javadoc-plugin</artifactId>
+                                    <configuration>
+                                        <additionalparam>-Xdoclint:none</additionalparam>
+                                    </configuration>
+                                </plugin>
+                            </reportPlugins>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
