@@ -31,7 +31,7 @@
     <scm>
         <url>https://github.com/elomagic/network-graph.git</url>
         <connection>scm:git:https://github.com/elomagic/network-graph.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:/elomagic/network-graph.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/elomagic/network-graph.git</developerConnection>
         <tag>NetworkGraph add-on for Vaadin</tag>
     </scm>
 
