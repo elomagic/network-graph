@@ -4,6 +4,8 @@
             <actionName>CUSTOM-Run Jetty</actionName>
             <displayName>Run Jetty</displayName>
             <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
                 <goal>jetty:run</goal>
             </goals>
         </action>
