@@ -1,21 +1,21 @@
 package de.elomagic.vaadin.addon.networkgraph.demo;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.UUID;
 
 import javax.servlet.annotation.WebServlet;
-
-import org.json.JSONException;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -29,7 +29,7 @@ import de.elomagic.vaadin.addon.networkgraph.NetworkGraph;
 @SuppressWarnings("serial")
 public class DemoUI extends UI {
 
-    private int id = 1;
+    private NetworkGraph networkGraph;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = DemoUI.class)
@@ -39,22 +39,47 @@ public class DemoUI extends UI {
     @Override
     protected void init(final VaadinRequest request) {
         try {
-            Edge edge = new Edge("node1", "node2");
-            //edge.setStyle("dash-line");
+            final TextField tfNodeId = new TextField("Node Id", UUID.randomUUID().toString().substring(0, 4));
+            final TextField tfNodeName = new TextField("Node Name");
+            final TextField tfNodeParentId = new TextField("Node Parent Id", "root");
+            final ComboBox cbNodeImage = new ComboBox("Node Image URL", Arrays.asList("/VAADIN/Company.png", "/VAADIN/Delivery.png", "/VAADIN/Home.png", "/VAADIN/Telephone.png"));
+            cbNodeImage.setValue("/VAADIN/Company.png");
 
-            GraphNode node1 = new GraphNode("node1", "Node 1");
-            node1.setTitle("blablabla<br/>blubb");
+            Button btnAddNodes = new Button("Add Node & Edge", new Button.ClickListener() {
 
-            GraphNode node3 = new GraphNode("node3", "Node 3");
-            node3.setShape("square");
+                @Override
+                public void buttonClick(final Button.ClickEvent event) {
+                    String id = tfNodeId.getValue();
+                    GraphNode newNode = new GraphNode(id, "ID=" + id + "; " + tfNodeName.getValue());
+                    newNode.setImage(cbNodeImage.getValue() == null ? "" : cbNodeImage.getValue().toString());
+                    newNode.setShape("image");
 
-            List<GraphNode> nodes = Arrays.asList(node1, new GraphNode("node2", "Node 2"), node3);
-            List<Edge> edges = Arrays.asList(edge, new Edge("node1", "node3"));
+                    String parentId = tfNodeParentId.getValue();
+                    Edge newEdge = new Edge(parentId, id);
+                    newEdge.setLength(200);
 
-            Data data = new Data(nodes, edges);
+                    networkGraph.addData(new GraphNode[] {newNode}, new Edge[] {newEdge});
+
+                    tfNodeId.setValue(UUID.randomUUID().toString().substring(0, 4));
+                }
+            });
+
+            FormLayout formLayout = new FormLayout(tfNodeName, tfNodeId, tfNodeParentId, cbNodeImage, btnAddNodes);
+            formLayout.setSizeUndefined();
+
+            GraphNode node1 = new GraphNode();
+            node1.setId("root");
+            node1.setLabel("ID=root");
+            node1.setTitle("I'm a happy root node");
+            node1.setShape("square");
+            node1.setColor("red");
+
+            Data data = new Data(
+                    Collections.singletonList(node1),
+                    Collections.EMPTY_LIST);
 
             // Initialize our new UI component
-            final NetworkGraph networkGraph = new NetworkGraph();
+            networkGraph = new NetworkGraph();
             networkGraph.setSizeFull();
             networkGraph.setData(data);
             networkGraph.addSelectListener(new NetworkGraph.SelectListener() {
@@ -65,48 +90,13 @@ public class DemoUI extends UI {
                 }
             });
 
-            Button btnRedraw = new Button("Redraw()", new Button.ClickListener() {
-
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    networkGraph.redraw();
-                }
-            });
-
-            Button btnAddNodes = new Button("add Nodes/Edges", new Button.ClickListener() {
-
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        GraphNode[] nodes = new GraphNode[] {
-                            new GraphNode("n" + Integer.toString(id++), ""),
-                            new GraphNode("n" + Integer.toString(id++), "")
-                        };
-
-                        networkGraph.addNodes(nodes);
-
-                        Edge[] edges = new Edge[] {
-                            new Edge("node1", "n" + Integer.toString(id - 2)),
-                            new Edge("node1", "n" + Integer.toString(id - 1))
-                        };
-
-                        networkGraph.addEdges(edges);
-                    } catch(JSONException ex) {
-                        ex.printStackTrace(System.err);
-                    }
-                }
-            });
-
-            HorizontalLayout hLayout = new HorizontalLayout(btnRedraw, btnAddNodes);
-            hLayout.setSizeUndefined();
-
-            // Show it in the middle of the screen
-            final VerticalLayout layout = new VerticalLayout();
+            // Show it
+            final VerticalLayout layout = new VerticalLayout(formLayout, networkGraph);
             layout.setStyleName("demoContentLayout");
             layout.setSizeFull();
-            layout.addComponents(networkGraph, hLayout);
-            layout.setComponentAlignment(networkGraph, Alignment.MIDDLE_CENTER);
+            layout.setExpandRatio(networkGraph, 1);
             setContent(layout);
+            setSizeFull();
         } catch(Exception ex) {
             ex.printStackTrace(System.err);
         }
