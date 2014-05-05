@@ -26,7 +26,7 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
         graph.redraw();
     };
 
-    this.clear = function(n) {
+    this.clear = function() {
         nodes.clear();
     };
 
@@ -62,7 +62,7 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
 
     this.setSelection = function(n) {
         graph.setSelection(n);
-    }
+    };
 
     var state = this.getState() || {};
     var options = state.options || {};
