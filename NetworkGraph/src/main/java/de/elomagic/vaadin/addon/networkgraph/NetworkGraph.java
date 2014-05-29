@@ -15,11 +15,6 @@
  */
 package de.elomagic.vaadin.addon.networkgraph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.server.EncodeResult;
@@ -27,10 +22,14 @@ import com.vaadin.server.JsonCodec;
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.JavaScriptFunction;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * NetworkGraph is a visualization to display graphs and networks consisting of nodes and edges.
@@ -68,6 +67,12 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         });
     }
 
+    private static <T> List<T> collectArgs(T item, T[] items) {
+        List<T> n = new ArrayList<>(asList(items));
+        n.add(item);
+        return n;
+    }
+
     public Options getOptions() {
         return getState().options;
     }
@@ -86,11 +91,6 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         callFunction("redraw");
     }
 
-    public void setData(final Data data) {
-        getState().data = data;
-        callFunction("setData", encodeArray(data.getNodes()), encodeArray(data.getEdges()));
-    }
-
     /**
      * Clear the complete DataSet.
      */
@@ -98,12 +98,10 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         callFunction("clear");
     }
 
-    public void addData(final GraphNode[] nodes, final Edge[] edges) {
-        callFunction("addData", encodeArray(nodes), encodeArray(edges));
-    }
-
-    public void addNodes(final GraphNode[] nodes) {
-        callFunction("addNodes", new Object[] {encodeArray(nodes)});
+    public void addNodes(Node node, Node... nodes) {
+        List<Node> n = collectArgs(node, nodes);
+        getState().nodes.addAll(n);
+        callFunction("addNodes", new Object[]{encodeArray(n)});
     }
 
     /**
@@ -111,26 +109,25 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      *
      * @param nodes
      */
-    public void updateNodes(final GraphNode[] nodes) {
-        callFunction("updateNodes", new Object[] {encodeArray(nodes)});
+    public void updateNodes(final Node node, Node... nodes) {
+        List<Node> n = collectArgs(node, nodes);
+        getState().nodes.addAll(n);
+        callFunction("updateNodes", new Object[]{encodeArray(n)});
     }
 
     public void removeNodes(final String[] nodeUIDs) {
-        callFunction("removeNodes", (Object[])nodeUIDs);
+        callFunction("removeNodes", (Object[]) nodeUIDs);
     }
 
-    public void addEdges(final Edge[] edges) {
-        callFunction("addEdges", new Object[] {encodeArray(edges)});
-    }
-
-    public void setEdges(final Edge[] edges) {
-        Data data = new Data(Collections.EMPTY_LIST, Arrays.asList(edges));
-        getState().data = data;
+    public void addEdges(final Edge edge, Edge... edges) {
+        List<Edge> e = collectArgs(edge, edges);
+        getState().edges.addAll(e);
+        callFunction("addEdges", new Object[]{encodeArray(e)});
     }
 
     @Override
     protected NetworkGraphState getState() {
-        return (NetworkGraphState)super.getState();
+        return (NetworkGraphState) super.getState();
     }
 
     /**
@@ -153,12 +150,12 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      *
      * @param nodes
      */
-    public void setSelection(final GraphNode[] nodes) {
-        callFunction("setSelection", new Object[]{encodeArray(nodes)});
+    public void setSelection(final Node node, Node... nodes) {
+        callFunction("setSelection", new Object[]{encodeArray(collectArgs(node, nodes))});
     }
 
     public void addSelectListener(final SelectListener listener) {
-        if(selectListener.contains(listener)) {
+        if (selectListener.contains(listener)) {
             return;
         }
 
@@ -172,15 +169,15 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
     private void fireSelectNodeEvent(final List<String> nodesId) {
         SelectEvent event = new SelectEvent(this, nodesId);
 
-        for(SelectListener listener : selectListener) {
+        for (SelectListener listener : selectListener) {
             listener.nodeSelect(event);
         }
     }
 
-    private Object[] encodeArray(final Object[] objects) {
+    private Object[] encodeArray(final Collection<?> objects) {
         List<Object> result = new ArrayList<>();
 
-        for(Object o : objects) {
+        for (Object o : objects) {
             result.add(encodeObject(o));
         }
 
@@ -196,6 +193,10 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         }
     }
 
+    public interface SelectListener {
+        void nodeSelect(final SelectEvent event);
+    }
+
     public class SelectEvent extends Component.Event {
         private final List<String> nodesId;
 
@@ -209,10 +210,6 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
             return nodesId;
         }
 
-    }
-
-    public interface SelectListener {
-        void nodeSelect(final SelectEvent event);
     }
 
 }

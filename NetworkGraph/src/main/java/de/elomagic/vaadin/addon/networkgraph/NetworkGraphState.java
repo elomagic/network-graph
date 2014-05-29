@@ -17,9 +17,14 @@ package de.elomagic.vaadin.addon.networkgraph;
 
 import com.vaadin.shared.ui.JavaScriptComponentState;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class NetworkGraphState extends JavaScriptComponentState {
 
-    public Data data = new Data();
-
     public Options options = new Options();
+
+    public Set<Node> nodes = new HashSet<>();
+
+    public Set<Edge> edges = new HashSet<>();
 }

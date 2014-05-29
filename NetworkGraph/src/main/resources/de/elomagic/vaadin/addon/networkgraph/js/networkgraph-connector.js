@@ -68,8 +68,8 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
     var options = state.options || {};
     options['width'] = '' + e.offsetWidth + 'px'
     options['height'] = '' + e.offsetHeight + 'px'
-    nodes.add([].concat(state.data.nodes || []))
-    edges.add([].concat(state.data.edges || []))
+    nodes.add([].concat(state.nodes || []))
+    edges.add([].concat(state.edges || []))
     graph = new vis.Graph(e, {
         nodes: nodes,
         edges: edges

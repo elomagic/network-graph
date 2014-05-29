@@ -19,12 +19,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.elomagic.vaadin.addon.networkgraph.Data;
-import de.elomagic.vaadin.addon.networkgraph.Edge;
-import de.elomagic.vaadin.addon.networkgraph.GraphNode;
-import de.elomagic.vaadin.addon.networkgraph.NetworkGraph;
-import de.elomagic.vaadin.addon.networkgraph.Options;
+import de.elomagic.vaadin.addon.networkgraph.*;
+import de.elomagic.vaadin.addon.networkgraph.Node;
 
+import static de.elomagic.vaadin.addon.networkgraph.Edge.Style.arrow;
 import static de.elomagic.vaadin.addon.networkgraph.Options.HierarchicalLayout.Direction.LR;
 
 @Theme("demo")
@@ -53,16 +51,17 @@ public class DemoUI extends UI {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
                     String id = tfNodeId.getValue();
-                    GraphNode newNode = new GraphNode(id, "ID=" + id + "; " + tfNodeName.getValue());
-                    newNode.setImage(cbNodeImage.getValue() == null ? "" : cbNodeImage.getValue().toString());
-                    newNode.setShape("image");
-
+                    String label = "ID=" + id + "; " + tfNodeName.getValue();
+                    String url = cbNodeImage.getValue() == null ? "" : cbNodeImage.getValue().toString();
                     String parentId = tfNodeParentId.getValue();
-                    Edge newEdge = new Edge(parentId, id);
-                    newEdge.setLength(200);
-                    newEdge.setStyle(Edge.Style.arrow);
 
-                    networkGraph.addData(new GraphNode[] {newNode}, new Edge[] {newEdge});
+                    // image shape was broken :)
+//                    networkGraph.addNodes(Node.builder().id(id).label(label).image(url).node());
+                    networkGraph.addNodes(Node.builder().id(id).label(label).title("Title " + id).shape("circle").color("red").node());
+                    Edge edge = new Edge(parentId, id);
+                    edge.setLength(100);
+                    edge.setStyle(arrow);
+                    networkGraph.addEdges(edge);
 
                     tfNodeId.setValue(UUID.randomUUID().toString().substring(0, 4));
                 }
@@ -71,26 +70,27 @@ public class DemoUI extends UI {
             FormLayout formLayout = new FormLayout(tfNodeName, tfNodeId, tfNodeParentId, cbNodeImage, btnAddNodes);
             formLayout.setSizeUndefined();
 
-            GraphNode node1 = new GraphNode();
-            node1.setId("root");
-            node1.setLabel("ID=root");
-            node1.setTitle("I'm a happy root node");
-            node1.setShape("square");
-            node1.setColor("red");
-
-            Data data = new Data(
-                    Collections.singletonList(node1),
-                    Collections.EMPTY_LIST);
-
             // Initialize our new UI component
             networkGraph = new NetworkGraph();
             networkGraph.setOptions(new Options() {{
                 setHierarchicalLayout(new HierarchicalLayout(){{
                     setDirection(LR);
                 }});
+                setEdges(new Edges() {{
+                    setArrowScaleFactor(1.1);
+                    setWidth(2);
+                    setStyle(arrow);
+                }});
+                setNodes(new Nodes() {{
+                    setFontSize(16);
+                    setShape("circle");
+                    setColor(new NodeColor() {{
+                        setColor("red");
+                    }});
+                }});
             }});
             networkGraph.setSizeFull();
-            networkGraph.setData(data);
+            networkGraph.addNodes(Node.builder().id("root").label("root").title("I'm a happy root node").shape("circle").color("red").node());
             networkGraph.addSelectListener(new NetworkGraph.SelectListener() {
 
                 @Override

@@ -97,6 +97,11 @@
             <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>17.0</version>
+        </dependency>
 
         <!-- This can be replaced with TestNG or some other test framework supported by the surefire plugin -->
         <dependency>
