@@ -21,4 +21,5 @@ public class NetworkGraphState extends JavaScriptComponentState {
 
     public Data data = new Data();
 
+    public Options options = new Options();
 }

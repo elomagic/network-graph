@@ -42,14 +42,14 @@ import org.json.JSONObject;
  * @author Carsten Rambow
  */
 @JavaScript({"js/vis.min.js", "js/networkgraph-connector.js"})
-@StyleSheet({"css/vis.css"})
+@StyleSheet({"css/vis.css", "css/networkgraph.css"})
 public class NetworkGraph extends AbstractJavaScriptComponent {
     private final List<SelectListener> selectListener = new ArrayList<>();
     private final List<String> selectedItems = new ArrayList<>();
 
     public NetworkGraph() {
         super();
-
+        setStyleName("networkgraph");
         addFunction("onSelectNodes", new JavaScriptFunction() {
 
             @Override
@@ -68,36 +68,41 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         });
     }
 
+    public Options getOptions() {
+        return getState().options;
+    }
+
+    public void setOptions(Options options) {
+        getState().options = options;
+        markAsDirty();
+    }
+
     /**
      * Redraw the graph.
      * <p/>
      * Useful when the layout of the webpage changed..
      */
     public void redraw() {
-        getState().data.setCommand(DataCommand.None);
         callFunction("redraw");
     }
 
     public void setData(final Data data) {
-        data.setCommand(DataCommand.Init);
         getState().data = data;
+        callFunction("setData", encodeArray(data.getNodes()), encodeArray(data.getEdges()));
     }
 
     /**
      * Clear the complete DataSet.
      */
     public void clear() {
-        getState().data.setCommand(DataCommand.None);
         callFunction("clear");
     }
 
     public void addData(final GraphNode[] nodes, final Edge[] edges) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("addData", encodeArray(nodes), encodeArray(edges));
     }
 
     public void addNodes(final GraphNode[] nodes) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("addNodes", new Object[] {encodeArray(nodes)});
     }
 
@@ -107,17 +112,14 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      * @param nodes
      */
     public void updateNodes(final GraphNode[] nodes) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("updateNodes", new Object[] {encodeArray(nodes)});
     }
 
     public void removeNodes(final String[] nodeUIDs) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("removeNodes", (Object[])nodeUIDs);
     }
 
     public void addEdges(final Edge[] edges) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("addEdges", new Object[] {encodeArray(edges)});
     }
 
@@ -152,7 +154,6 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      * @param nodes
      */
     public void setSelection(final GraphNode[] nodes) {
-        getState().data.setCommand(DataCommand.None);
         callFunction("setSelection", new Object[]{encodeArray(nodes)});
     }
 

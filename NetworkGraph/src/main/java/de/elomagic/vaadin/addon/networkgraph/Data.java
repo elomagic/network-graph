@@ -21,7 +21,6 @@ import java.util.List;
  * The data class of the Graph is an object which can contain different types of data.
  */
 public final class Data {
-    private String command = DataCommand.None.name();
     private GraphNode[] nodes;
     private Edge[] edges;
 
@@ -48,17 +47,4 @@ public final class Data {
     public void setEdges(final Edge[] edges) {
         this.edges = edges;
     }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(final String command) {
-        this.command = command;
-    }
-
-    public void setCommand(final DataCommand command) {
-        this.command = command.name();
-    }
-
 }

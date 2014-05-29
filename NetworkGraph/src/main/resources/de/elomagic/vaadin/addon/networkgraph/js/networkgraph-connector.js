@@ -15,7 +15,9 @@
  */
 window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
 
-    var nodes, edges, graph;
+    var nodes = new vis.DataSet(),
+        edges = new vis.DataSet(),
+        graph;
 
     var e = this.getElement();
     var self = this;
@@ -29,65 +31,55 @@ window.de_elomagic_vaadin_addon_networkgraph_NetworkGraph = function() {
     };
 
     this.addData = function(no, ed) {
-        nodes.add(new Array().concat(no));
-        edges.add(new Array().concat(ed));
+        nodes.add([].concat(no));
+        edges.add([].concat(ed));
+    };
+
+    this.setData = function(no, ed) {
+        nodes = new vis.DataSet([].concat(no))
+        edges = new vis.DataSet([].concat(ed))
+        graph.setData({
+            nodes: nodes,
+            edges: edges
+        })
     };
 
     this.addNodes = function(n) {
-        nodes.add(new Array().concat(n));
+        nodes.add([].concat(n));
     };
 
     this.updateNodes = function(n) {
-        nodes.update(new Array().concat(n));
+        nodes.update([].concat(n));
     };
 
     this.removeNodes = function(n) {
-        nodes.remove(new Array().concat(n));
+        nodes.remove([].concat(n));
     }
 
     this.addEdges = function(ed) {
-        edges.add(new Array().concat(ed));
+        edges.add([].concat(ed));
     };
 
     this.setSelection = function(n) {
         graph.setSelection(n);
     }
 
-    // Handle changes from the server-side
-    this.onStateChange = function() {
-        var state = this.getState();
-        var command = state.data.command;
+    var state = this.getState() || {};
+    var options = state.options || {};
+    options['width'] = '' + e.offsetWidth + 'px'
+    options['height'] = '' + e.offsetHeight + 'px'
+    nodes.add([].concat(state.data.nodes || []))
+    edges.add([].concat(state.data.edges || []))
+    graph = new vis.Graph(e, {
+        nodes: nodes,
+        edges: edges
+    }, options);
+    graph.on('select', function(properties) {
+        self.onSelectNodes(properties.nodes);
+    });
 
-        if (command == "Init") {
-//            e.innerHTML = "<div id=\"netgraph\" style=\"width: " + state.width + "; height:" + state.height + "\"></div><div id=\"log\"></div>";
-            e.innerHTML = "<div id=\"netgraph\"></div><div id=\"log\"></div>";
-
-            nodes = new vis.DataSet();
-            nodes.add(new Array().concat(state.data.nodes));
-
-            edges = new vis.DataSet();
-            edges.add(new Array().concat(state.data.edges));
-
-            var model = {
-                nodes: nodes,
-                edges: edges
-            };
-
-            var options = {
-                width: state.width,
-                height: state.height
-            };
-
-            var container = document.getElementById('netgraph');
-            graph = new vis.Graph(container, model, options);
-            graph.on('select', function(properties) {
-                self.onSelectNodes(properties.nodes);
-            });
-
-            window.onresize = function() {
-                graph.redraw();
-            };
-
-        }
+    window.onresize = function() {
+        graph.redraw();
     };
+
 };

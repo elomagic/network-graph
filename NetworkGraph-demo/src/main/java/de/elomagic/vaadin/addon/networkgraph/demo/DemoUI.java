@@ -23,6 +23,9 @@ import de.elomagic.vaadin.addon.networkgraph.Data;
 import de.elomagic.vaadin.addon.networkgraph.Edge;
 import de.elomagic.vaadin.addon.networkgraph.GraphNode;
 import de.elomagic.vaadin.addon.networkgraph.NetworkGraph;
+import de.elomagic.vaadin.addon.networkgraph.Options;
+
+import static de.elomagic.vaadin.addon.networkgraph.Options.HierarchicalLayout.Direction.LR;
 
 @Theme("demo")
 @Title("NetworkGraph Add-on Demo")
@@ -57,6 +60,7 @@ public class DemoUI extends UI {
                     String parentId = tfNodeParentId.getValue();
                     Edge newEdge = new Edge(parentId, id);
                     newEdge.setLength(200);
+                    newEdge.setStyle(Edge.Style.arrow);
 
                     networkGraph.addData(new GraphNode[] {newNode}, new Edge[] {newEdge});
 
@@ -80,13 +84,18 @@ public class DemoUI extends UI {
 
             // Initialize our new UI component
             networkGraph = new NetworkGraph();
+            networkGraph.setOptions(new Options() {{
+                setHierarchicalLayout(new HierarchicalLayout(){{
+                    setDirection(LR);
+                }});
+            }});
             networkGraph.setSizeFull();
             networkGraph.setData(data);
             networkGraph.addSelectListener(new NetworkGraph.SelectListener() {
 
                 @Override
                 public void nodeSelect(final NetworkGraph.SelectEvent event) {
-                    Notification.show("Nodes selected: " + Arrays.toString(event.getNodesId().toArray()));
+                    Notification.show("Nodes selected: " + Arrays.toString(event.getNodesId().toArray()), Notification.Type.TRAY_NOTIFICATION);
                 }
             });
 
