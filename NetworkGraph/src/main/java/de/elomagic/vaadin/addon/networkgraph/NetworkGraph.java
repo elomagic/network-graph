@@ -22,6 +22,8 @@ import java.util.List;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.StyleSheet;
+import com.vaadin.server.EncodeResult;
+import com.vaadin.server.JsonCodec;
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.JavaScriptFunction;
@@ -54,7 +56,7 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
             public void call(final JSONArray arguments) throws JSONException {
                 JSONArray array = arguments.getJSONArray(0);
                 List<String> list = new ArrayList<>();
-                for(int i = 0; i < array.length(); i++) {
+                for (int i = 0; i < array.length(); i++) {
                     list.add(array.getString(i));
                 }
 
@@ -91,12 +93,12 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
 
     public void addData(final GraphNode[] nodes, final Edge[] edges) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("addData", toJSONArray(nodes), toJSONArray(edges));
+        callFunction("addData", encodeArray(nodes), encodeArray(edges));
     }
 
     public void addNodes(final GraphNode[] nodes) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("addNodes", new Object[] {toJSONArray(nodes)});
+        callFunction("addNodes", new Object[] {encodeArray(nodes)});
     }
 
     /**
@@ -106,7 +108,7 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      */
     public void updateNodes(final GraphNode[] nodes) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("updateNodes", new Object[] {toJSONArray(nodes)});
+        callFunction("updateNodes", new Object[] {encodeArray(nodes)});
     }
 
     public void removeNodes(final String[] nodeUIDs) {
@@ -116,7 +118,7 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
 
     public void addEdges(final Edge[] edges) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("addEdges", new Object[] {toJSONArray(edges)});
+        callFunction("addEdges", new Object[] {encodeArray(edges)});
     }
 
     public void setEdges(final Edge[] edges) {
@@ -151,7 +153,7 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
      */
     public void setSelection(final GraphNode[] nodes) {
         getState().data.setCommand(DataCommand.None);
-        callFunction("setSelection", new Object[] {toJSONArray(nodes)});
+        callFunction("setSelection", new Object[]{encodeArray(nodes)});
     }
 
     public void addSelectListener(final SelectListener listener) {
@@ -174,14 +176,23 @@ public class NetworkGraph extends AbstractJavaScriptComponent {
         }
     }
 
-    private JSONObject[] toJSONArray(final Object[] objects) {
-        List<JSONObject> result = new ArrayList();
+    private Object[] encodeArray(final Object[] objects) {
+        List<Object> result = new ArrayList<>();
 
         for(Object o : objects) {
-            result.add(new JSONObject(o));
+            result.add(encodeObject(o));
         }
 
-        return result.toArray(new JSONObject[0]);
+        return result.toArray(new Object[result.size()]);
+    }
+
+    private Object encodeObject(Object o) {
+        try {
+            EncodeResult result = JsonCodec.encode(o, null, o.getClass(), null);
+            return result.getEncodedValue();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public class SelectEvent extends Component.Event {
