@@ -55,9 +55,14 @@ Another way of debugging client-side is superdev mode. To enable it, uncomment d
 
 ## Release notes
 
-### Version 1.0.0-SNAPSHOT
-- ...
-- ...
+### Version 0.9.1-SNAPSHOT
+- Vaadin 7.2.x support added
+- JS library "Vis.js" updated to version 1.0.2
+- Graph display fixed
+
+### Version 0.9.0
+- Initial Release
+- Vaadin 7.1.x support added
 
 ## Roadmap
 
