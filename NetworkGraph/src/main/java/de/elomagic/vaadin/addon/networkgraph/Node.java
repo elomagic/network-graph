@@ -15,12 +15,16 @@
  */
 package de.elomagic.vaadin.addon.networkgraph;
 
+import com.google.common.base.Optional;
+
+import java.util.UUID;
+
 /**
  * GraphNodes typically have an id and label.
  * <p/>
  * A node must contain at least a property id. GraphNodes can have extra properties, used to define the shape and style of the nodes.
  */
-public class GraphNode {
+public class Node {
     private String id;
     private String label;
     private String color = "";
@@ -28,10 +32,10 @@ public class GraphNode {
     private String image;
     private String title;
 
-    public GraphNode() {
+    public Node() {
     }
 
-    public GraphNode(final String id, final String label) {
+    public Node(final String id, final String label) {
         this.id = id;
         this.label = label;
     }
@@ -176,4 +180,74 @@ public class GraphNode {
         this.title = title;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        if (id != null ? !id.equals(node.id) : node.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    public static NodeBuilder builder() {
+        return new NodeBuilder();
+    }
+
+    public static class NodeBuilder {
+
+        private String id;
+        private String label;
+        private String title;
+        private String shape;
+        private String color;
+        private String image;
+
+        public NodeBuilder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public NodeBuilder label(String label) {
+            this.label = label;
+            return this;
+        }
+
+        public NodeBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public NodeBuilder shape(String shape) {
+            this.shape = shape;
+            return this;
+        }
+
+        public NodeBuilder color(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public NodeBuilder image(String url) {
+            this.shape = "image";
+            this.image = url;
+            return this;
+        }
+
+        public Node node() {
+            Node n = new Node(Optional.fromNullable(id).or(UUID.randomUUID().toString()), label);
+            n.setTitle(title);
+            n.setShape(shape);
+            n.setColor(color);
+            n.setImage(image);
+            return n;
+        }
+    }
 }
