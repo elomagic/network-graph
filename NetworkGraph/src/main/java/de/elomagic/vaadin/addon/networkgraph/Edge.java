@@ -23,6 +23,8 @@ package de.elomagic.vaadin.addon.networkgraph;
 public final class Edge {
     private String from;
     private String to;
+    private String title;
+    private String label;
     private Style style = Style.line;
     private String color = "";
     private int length;
@@ -135,6 +137,42 @@ public final class Edge {
      */
     public void setLength(final int length) {
         this.length = length;
+    }
+
+    /**
+     * Returns the title of the edge. (Tooltip Text seen on mouseover)
+     *
+     * @return title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Set the title of the edge. (Tooltip Text seen on mouseover)
+     *
+     * @param title
+     */
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    /**
+     * Returns the label of the edge.
+     *
+     * @return label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Set the label of the edge.
+     *
+     * @param label
+     */
+    public void setLabel(final String label) {
+        this.label = label;
     }
 
     public static enum Style {
